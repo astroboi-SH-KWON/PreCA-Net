@@ -42,9 +42,9 @@ class Utils:
                 # f.write(x_seq[idx] + str(feat) + "\t" + str(y_pred_list[idx][0]) + "\t" + str(y_trgt[idx]) + "\n")
                 f.write(x_seq[idx] + str(feat) + "\t" + str(y_trgt[idx]) + "\t" + str(y_pred_list[idx][0]) + "\n")
 
-    def permutate_list(self, str_arr, obj_arr):
+    def permute_list(self, str_arr, obj_arr):
         if len(str_arr) != len(obj_arr):
-            print("permutate_list : array size not matching")
+            print("permute_list : array size not matching")
             return
 
         str_list = list(itertools.permutations(str_arr))

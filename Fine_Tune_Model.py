@@ -62,7 +62,6 @@ if __name__ == '__main__':
     ################# st hyper param ############################
     if SYSTEM_NM == 'Linux':
         # REAL
-        # batch_epoch_list = [[32, 50], [64, 100], [128, 150], [256, 200], [512, 250], [1024, 300], [2048, 350]][::-1]  # linux
         batch_epoch_list = [[512, 250]][::-1]  # linux
         pre_model_path = "./models/Pre_Train_Model/"
     else:
@@ -320,9 +319,10 @@ if __name__ == '__main__':
 
                                 fine_model.compile(
                                     loss=loss_func_list[func_idx]
-                                    , optimizer=keras.optimizers.Adam(lr=learning_rate, clipvalue=0.5, clipnorm=1.0,
-                                                                      beta_1=0.9, beta_2=0.999,
-                                                                      epsilon=None, decay=0.0)
+                                    , optimizer=keras.optimizers.RMSprop(lr=learning_rate, rho=0.9, epsilon=None, decay=0.0)
+                                    # , optimizer=keras.optimizers.Adam(lr=learning_rate, clipvalue=0.5, clipnorm=1.0,
+                                    #                                   beta_1=0.9, beta_2=0.999,
+                                    #                                   epsilon=None, decay=0.0)
                                     , metrics=["mse", custm_loss.pearson_loss]
                                 )
 
