@@ -62,14 +62,14 @@ if __name__ == '__main__':
     ################# st hyper param ############################
     if SYSTEM_NM == 'Linux':
         # REAL
-        batch_epoch_list = [[512, 250]][::-1]  # linux
+        batch_epoch_list = [[512, 250]]  # linux
         pre_model_path = "./models/Pre_Train_Model/"
     else:
         # DEV
-        batch_epoch_list = [[64, 2]][::-1]
+        batch_epoch_list = [[64, 2]]
         pre_model_path = "D:/000_WORK/mine/SpCas9variants/models/"
 
-    fc_1_arr = [128, 256, 512, 1024]  # fine-tuning
+    fc_1_arr = [128, 256, 512, 1024][::-1]  # fine-tuning
     drp_arr = [0.0]  # use BN not dropout
     loss_nms_list = [("mse", "pearson")]
     loss_func_list = [("mse", custm_loss.pearson_loss)]
@@ -109,12 +109,10 @@ if __name__ == '__main__':
 
         for learning_rate in lr_arr:
             MODEL_NM = MODEL_NM + str(learning_rate) + "_model"
-            print("make model option dict")
+            print("make fine_tune_model option dict")
             options_list = []
 
             for drp in drp_arr:
-                cnv1_krnl_num = 256
-                cnv2_krnl_num = 256
                 for fc_1_num in fc_1_arr:
                     for layer_f_num in layer_f_arr:
                         for layer_last_num in layer_last_arr:
@@ -137,7 +135,7 @@ if __name__ == '__main__':
                             }
                             options_list.append(options_dict)
 
-            print("DONE : make model option dict")
+            print("DONE : make fine_tune_model option dict")
 
             for opts_dict in options_list:
                 fc_1 = opts_dict['fc_1']['w_num']
@@ -165,7 +163,8 @@ if __name__ == '__main__':
                             with keras.utils.CustomObjectScope(
                                     {'pearson_loss': custm_loss.pearson_loss}):
 
-                                sngl_oput = deep_model.model_1cnv_incptn_w_mx({
+                                print("st : load pre_train_model")
+                                pre_sngl_oput = deep_model.model_1cnv_incptn_w_mx({
                                                                                 "conv1": {
                                                                                     "knl_num": 256
                                                                                     , "filt_shp": (4, 3)
@@ -253,27 +252,28 @@ if __name__ == '__main__':
                                 if isinstance(loss_nms_list[func_idx], str) or loss_num == 1:
                                     if mntr_tmp == 'val_output_pearson_loss':
                                         mntr_tmp = 'val_pearson_loss'
-                                    mdl_trgt_arr = sngl_oput
+                                    pre_mdl_trgt_arr = pre_sngl_oput
                                     trn_trgt_arr = train_Y
                                     tst_trgt_arr = ans_y
                                 elif loss_num == 2:
-                                    mdl_trgt_arr = [sngl_oput, sngl_oput]
+                                    pre_mdl_trgt_arr = [pre_sngl_oput, pre_sngl_oput]
                                     trn_trgt_arr = [train_Y, train_Y]
                                     tst_trgt_arr = [ans_y, ans_y]
                                 else:
-                                    mdl_trgt_arr = [sngl_oput, sngl_oput, sngl_oput]
+                                    pre_mdl_trgt_arr = [pre_sngl_oput, pre_sngl_oput, pre_sngl_oput]
                                     trn_trgt_arr = [train_Y, train_Y, train_Y]
                                     tst_trgt_arr = [ans_y, ans_y, ans_y]
 
                                 if "category" in loss_nms_list[func_idx]:
                                     crsentp_idx = loss_nms_list[func_idx].index("category")
-                                    mdl_trgt_arr[crsentp_idx] = tf.sign(sngl_oput)
+                                    pre_mdl_trgt_arr[crsentp_idx] = tf.sign(pre_sngl_oput)
                                     trn_trgt_arr[crsentp_idx] = train_Cat
                                     tst_trgt_arr[crsentp_idx] = test_cat
                                 ################# en data array ############################
 
-                                pre_model = keras.Model([deep_model.main_input, deep_model.feature_input], mdl_trgt_arr)
+                                pre_model = keras.Model([deep_model.main_input, deep_model.feature_input], pre_mdl_trgt_arr)
                                 pre_model.load_weights(pre_model_path + "Pre_Train_" + str(i) + ".h5")
+                                print("DONE : load pre_train_model")
 
                                 x = pre_model.layers[30].output  # flatten 30
                                 print("flatten", x)
@@ -297,22 +297,14 @@ if __name__ == '__main__':
                                     if mntr_tmp == 'val_output_pearson_loss':
                                         mntr_tmp = 'val_pearson_loss'
                                     mdl_trgt_arr = sngl_oput
-                                    trn_trgt_arr = train_Y
-                                    tst_trgt_arr = ans_y
                                 elif loss_num == 2:
                                     mdl_trgt_arr = [sngl_oput, sngl_oput]
-                                    trn_trgt_arr = [train_Y, train_Y]
-                                    tst_trgt_arr = [ans_y, ans_y]
                                 else:
                                     mdl_trgt_arr = [sngl_oput, sngl_oput, sngl_oput]
-                                    trn_trgt_arr = [train_Y, train_Y, train_Y]
-                                    tst_trgt_arr = [ans_y, ans_y, ans_y]
 
                                 if "category" in loss_nms_list[func_idx]:
                                     crsentp_idx = loss_nms_list[func_idx].index("category")
                                     mdl_trgt_arr[crsentp_idx] = tf.sign(sngl_oput)
-                                    trn_trgt_arr[crsentp_idx] = train_Cat
-                                    tst_trgt_arr[crsentp_idx] = test_cat
                                 ################# en data array ############################
 
                                 fine_model = keras.Model([deep_model.main_input, deep_model.feature_input], mdl_trgt_arr)
@@ -354,9 +346,14 @@ if __name__ == '__main__':
                                 )
 
                                 os.makedirs(ouput_path, exist_ok=True)
+                                os.makedirs(ouput_path, exist_ok=True)
+                                append_path = ouput_path + "/append_" + fl_nm + "_Fine_Tune_" + str(i) + ".txt"
                                 y_pred_last, _ = fine_model.predict([test_x, test_f])
-                                last_model_path = ouput_path + opt + ".txt"
-                                test_f_list = list(test_f)
-                                util.make_trgt_result_file(last_model_path, ans_y, y_pred_last, seq_x, test_f_list)
+
+                                util.append_model_pearsonr_spearmanr(append_path, ans_y, y_pred_last, start_time, opt)
+
+                                # last_model_path = ouput_path + opt + ".txt"
+                                # test_f_list = list(test_f)
+                                # util.make_trgt_result_file(last_model_path, ans_y, y_pred_last, seq_x, test_f_list)
 
 
