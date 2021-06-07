@@ -1,6 +1,23 @@
 # PreCA-Net
 PreCA-Net : Prediction for CRISPR-Cas9 variants’ Activities on Deep Neural Network
 
+    
+     The CRISPR-Cas9 system has been utilized in various fields including the development of insect-resistant agricultural or livestock products 
+    and disease treatment by correcting or removing genes that cause diseases. However, researchers must spend a lot of time and effort 
+    to find the most efficient guide RNA and Cas9 variants for their own research projects.
+    
+     Here, we propose PreCA-Net, a deep-learning model that predicts the activity of Cas9 variants from any target sequence by using recently developed CNN models. 
+    PreCA-Net uses convolutional layers to create general feature maps of Cas9 variants and multiple sizes of kernels with a modified inception module to learn various patterns of target sequences. 
+    Through batch normalization, PreCA-Net prevents internal covariate shifts when learning and creates models faster by giving large learning rates. 
+    Additionally, PreCA-Net makes specialized models for each Cas9 variant by fine tuning. The general mean squared error and the Pearson correlation
+    , an indication of performance evaluation of models, were applied as customized loss function to simultaneously learn a positive linear relationship 
+    between the predicted activity of Cas9 variants and its target value.
+    
+     PreCA-Net predicts the efficiency of guide RNAs for each Cas9 variant in all possible target sequences 
+    so that researchers can choose the most appropriate Cas9 variants and guide RNAs for their own research needs. 
+
+
+    
     how to set env
     non_GPU
     if window
