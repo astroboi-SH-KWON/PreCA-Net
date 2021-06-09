@@ -41,10 +41,10 @@ PreCA-Net : Prediction for CRISPR-Cas9 variants’ Activities on Deep Neural Net
 [Occlusion experiments]
 ![Occlusion experiments](./etc/occ.png)
 
-[one-hot encoding by DataGenerator.py]
-![one_hot_encoding](./etc/figure_3_3_one_hot_encoding.png)
-
+[Pearson correlation and Spearman's rank correlation by loss functions]
 ![loss functions](./etc/loss.PNG)
+
+[Pearson correlation and Spearman's rank correlation by batch normalization vs. dropout]
 ![batch_normalization_vs_dropout](./etc/BN_drp_big.png)
 
     
@@ -84,3 +84,7 @@ PreCA-Net : Prediction for CRISPR-Cas9 variants’ Activities on Deep Neural Net
         
         conda install -c anaconda pandas=1.1.3 xlrd=1.2.0 pydot=1.4.1 pydotplus=2.0.2 scikit-learn=0.23.2
         conda install -c conda-forge matplotlib=3.3.3
+
+
+[one-hot encoding by DataGenerator.py]
+![one_hot_encoding](./etc/figure_3_3_one_hot_encoding.png)
