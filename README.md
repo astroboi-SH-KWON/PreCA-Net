@@ -35,6 +35,12 @@ PreCA-Net : Prediction for CRISPR-Cas9 variants’ Activities on Deep Neural Net
 [PreCA-Net structure]
 ![PreCA-Net structure](./etc/figure_3_2_PreCA-Net_structure.png)
 
+[results]
+![results](./etc/figure_4_5.png)
+
+[Occlusion experiments]
+![Occlusion experiments](./etc/occ.png)
+
 [one-hot encoding by DataGenerator.py]
 ![one_hot_encoding](./etc/figure_3_3_one_hot_encoding.png)
 
