@@ -38,7 +38,7 @@ PreCA-Net : Prediction for CRISPR-Cas9 variants’ Activities on Deep Neural Net
 [one-hot encoding by DataGenerator.py]
 ![one_hot_encoding](./etc/figure_3_3_one_hot_encoding.png)
 
-![loss functions](./etc/loss.png)
+![loss functions](./etc/loss.PNG)
 ![batch_normalization_vs_dropout](./etc/BN_drp_big.png)
 
     
