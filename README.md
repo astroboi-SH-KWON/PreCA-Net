@@ -33,19 +33,35 @@ PreCA-Net : Prediction for CRISPR-Cas9 variants’ Activities on Deep Neural Net
     
     
 [PreCA-Net structure]
+
 ![PreCA-Net structure](./etc/figure_3_2_PreCA-Net_structure.png)
 
+
+
 [results]
+
 ![results](./etc/figure_4_5.png)
 
+
+
 [Occlusion experiments]
+
 ![Occlusion experiments](./etc/occ.png)
 
+
+
 [Pearson correlation and Spearman's rank correlation by loss functions]
+
 ![loss functions](./etc/loss.PNG)
 
+
+
 [Pearson correlation and Spearman's rank correlation by batch normalization vs. dropout]
+
 ![batch_normalization_vs_dropout](./etc/BN_drp_big.png)
+
+
+
 
     
         how to set env
